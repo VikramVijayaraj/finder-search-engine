@@ -21,25 +21,9 @@ CREATE TABLE IF NOT EXISTS web_data (
 )
 """)
 
-# Insert a single record
-# sql = "INSERT INTO employees (name, age, gender) VALUES (%s, %s, %s)"
-# val = ("John Doe", 28, "Male")
-# cursor.execute(sql, val)
+# Add Fulltext column to the table
+cursor.execute("""
+    ALTER TABLE web_data
+    ADD FULLTEXT(title, metadata)
+""")
 
-# Insert multiple records
-# sql = "INSERT INTO employees (name, age, gender) VALUES (%s, %s, %s)"
-# vals = [
-#     ("Jane Doe", 25, "Female"),
-#     ("Mike Smith", 30, "Male"),
-#     ("Sara Connor", 27, "Female")
-# ]
-# cursor.executemany(sql, vals)
-
-# Commit the transaction
-# conn.commit()
-
-# print(cursor.rowcount, "record(s) inserted.")
-
-# Close the cursor and connection
-# cursor.close()
-# conn.close()
