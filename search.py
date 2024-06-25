@@ -1,10 +1,25 @@
 from db import conn, cursor
 
 
-user_input = "adventure books"
+def search_webpages(search_query):
+    query = """
+        SELECT url, title, metadata, MATCH(title, metadata) AGAINST(%s IN NATURAL LANGUAGE MODE) AS score
+        FROM web_data
+        WHERE MATCH(title, metadata) AGAINST(%s IN NATURAL LANGUAGE MODE)
+        ORDER BY score DESC
+    """
 
-read_data = "SELECT * FROM web_data"
-cursor.execute(read_data)
-result = cursor.fetchall()
+    cursor.execute(query, (search_query, search_query))
+    result = cursor.fetchall()
 
-print(result)
+    for row in result:
+        print(row[0])
+
+
+user_input = "five are together book"
+search_webpages(user_input)
+
+
+# Close MySql connection
+cursor.close()
+conn.close()

@@ -27,3 +27,4 @@ cursor.execute("""
     ADD FULLTEXT(title, metadata)
 """)
 
+conn.commit()
