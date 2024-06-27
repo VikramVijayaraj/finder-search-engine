@@ -20,6 +20,6 @@ user_input = "five are together book"
 search_webpages(user_input)
 
 
-# Close MySql connection
+# Close database connection
 cursor.close()
 conn.close()
