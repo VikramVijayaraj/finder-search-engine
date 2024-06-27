@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 
 app = Flask(__name__)
@@ -8,6 +8,15 @@ app = Flask(__name__)
 def home():
     return render_template(
         "index.html"
+    )
+
+
+@app.route("/search", methods=["POST"])
+def do_search():
+    query = request.form["query"]
+    return render_template(
+        "results.html",
+        query=query
     )
 
 
