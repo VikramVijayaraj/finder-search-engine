@@ -28,3 +28,6 @@ cursor.execute("""
 """)
 
 conn.commit()
+
+# cursor.close()
+# conn.close()

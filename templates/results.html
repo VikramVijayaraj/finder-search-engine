@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Jr.</title>
+</head>
+<body>
+    <h1>Results Page</h1>
+    <h2>Search query: {{ query }}</h2>
+
+    {% for row in results %}
+        <p>{{ row[0] }}</p>
+        <p>{{ row[1] }}</p>
+    {% endfor %}
+</body>
+</html>
