@@ -11,9 +11,9 @@ def home():
     )
 
 
-@app.route("/search", methods=["POST"])
+@app.route("/search")
 def do_search():
-    query = request.form["query"]
+    query = request.args.get('query', '')
     results = search_webpages(query)
     return render_template(
         "results.html",

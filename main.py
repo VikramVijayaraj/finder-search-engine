@@ -6,17 +6,23 @@ from db import conn, cursor
 def scrape_data(url):
     res = requests.get(url)
     content = ""
-
+    print(res.status_code, url)
     if res.status_code != 200:
         print(f"ERROR: {res.status_code}")
         return
 
     soup_ = BeautifulSoup(res.text, 'html.parser')
     title = str(soup_.title.text).strip()
-    meta_tag = soup_.find('meta', attrs={'name': 'description'})
-
-    if meta_tag:
-        content = meta_tag.get('content').strip()
+    # meta_tag = soup_.find('meta', attrs={'name': 'description'})
+    #
+    # if meta_tag:
+    #     content = meta_tag.get('content').strip()
+    meta_tags = soup_.find_all('meta')
+    for meta in meta_tags:
+        data = meta.get("name")
+        if data and "description" in data.lower():
+            content = meta.get("content")
+            break
 
     map[url] = [title, content]
 
@@ -28,23 +34,28 @@ def insert_data(url, title, metadata):
 
 
 # ------ Main ------
-base_url = "https://kitabay.com/"
+url_list = ["https://kitabay.com/"]
+base_url = "https://www.bookswagon.com/"
 map = {}
+url_count = 0
 scrape_data(base_url)
 
 response = requests.get(base_url)
-
 if response.status_code == 200:
     soup = BeautifulSoup(response.text, 'html.parser')
     a_tags = soup.find_all('a')
 
     for tag in a_tags:
         link = tag.get('href')
-        if link[:len(base_url)] == base_url:
-            scrape_data(link)
-        elif link[0] == "/":
-            full_link = base_url + link[1:]
-            scrape_data(full_link)
+        if link:
+            if link[:len(base_url)] == base_url:
+                scrape_data(link)
+                url_count += 1
+            elif link[0] == "/":
+                full_link = base_url + link[1:]
+                scrape_data(full_link)
+                url_count += 1
+            print(f"Total URL count: {url_count}")
 
     for key, values in map.items():
         insert_data(key, values[0], values[1])
