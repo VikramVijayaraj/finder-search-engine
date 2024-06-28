@@ -1,68 +1,72 @@
 from bs4 import BeautifulSoup
 import requests
-from db import conn, cursor
+from db_connection import connection
+
+
+def get_soup(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup
+    else:
+        print(f"ERROR: Status Code {response.status_code}")
+    return None
 
 
 def scrape_data(url):
-    res = requests.get(url)
+    soup = get_soup(url)
     content = ""
-    print(res.status_code, url)
-    if res.status_code != 200:
-        print(f"ERROR: {res.status_code}")
+    print(url)
+    if not soup:
         return
 
-    soup_ = BeautifulSoup(res.text, 'html.parser')
-    title = str(soup_.title.text).strip()
-    # meta_tag = soup_.find('meta', attrs={'name': 'description'})
-    #
-    # if meta_tag:
-    #     content = meta_tag.get('content').strip()
-    meta_tags = soup_.find_all('meta')
+    title = str(soup.title.text).strip()
+    meta_tags = soup.find_all('meta')
     for meta in meta_tags:
         data = meta.get("name")
         if data and "description" in data.lower():
             content = meta.get("content")
             break
 
+    # Add to the dictionary
     map[url] = [title, content]
 
 
 def insert_data(url, title, metadata):
-    sql = "INSERT INTO web_data (url, title, metadata) VALUES (%s, %s, %s)"
+    cursor = connection.cursor()
+    sql = "INSERT INTO books_data (url, title, metadata) VALUES (%s, %s, %s)"
     val = (url, title, metadata)
     cursor.execute(sql, val)
+    connection.commit()
+    cursor.close()
 
 
 # ------ Main ------
-url_list = ["https://kitabay.com/"]
-base_url = "https://www.bookswagon.com/"
-map = {}
-url_count = 0
-scrape_data(base_url)
+# url_list = ["https://kitabay.com/","https://www.bookswagon.com/"]
+# domain = "https://tulikabooks.in/"
+# base_url = "https://tulikabooks.in/agrarian-study.html"
+domain = input("Enter domain: ")
+base_url = input("Enter Base URL: ")
 
-response = requests.get(base_url)
-if response.status_code == 200:
-    soup = BeautifulSoup(response.text, 'html.parser')
+map = {}
+
+soup = get_soup(base_url)
+if soup:
+    scrape_data(base_url)
     a_tags = soup.find_all('a')
 
     for tag in a_tags:
         link = tag.get('href')
         if link:
-            if link[:len(base_url)] == base_url:
+            if link[:len(domain)] == domain:
                 scrape_data(link)
-                url_count += 1
             elif link[0] == "/":
                 full_link = base_url + link[1:]
                 scrape_data(full_link)
-                url_count += 1
-            print(f"Total URL count: {url_count}")
+        print(f"Total records: {len(map)}")
 
     for key, values in map.items():
         insert_data(key, values[0], values[1])
 
-    print(f"Total records: {len(map)}")
-    conn.commit()
-
-    # Close the cursor and connection
-    cursor.close()
-    conn.close()
+    # Close the connection
+    connection.close()
