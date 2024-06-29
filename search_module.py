@@ -15,11 +15,3 @@ def search_webpages(search_query):
     cursor.close()
     return results
 
-
-# user_input = "five are together book"
-# search_webpages(user_input)
-
-
-# Close database connection
-# cursor.close()
-# conn.close()
