@@ -43,13 +43,14 @@ def insert_data(url, title, metadata):
 
 # ------ Main ------
 # url_list = ["https://kitabay.com/","https://www.bookswagon.com/"]
-# domain = "https://tulikabooks.in/"
+domain = "https://tulikabooks.in/"
 # base_url = "https://tulikabooks.in/agrarian-study.html"
-domain = input("Enter domain: ")
+# domain = input("Enter domain: ")
 base_url = input("Enter Base URL: ")
-
+# base_urls = ["https://tulikabooks.in/cultural-studies.html", "https://tulikabooks.in/dance.html", "https://tulikabooks.in/development-studies.html", "https://tulikabooks.in/economics.html", "https://tulikabooks.in/education.html", "https://tulikabooks.in/environment-studies.html", "https://tulikabooks.in/history.html", "https://tulikabooks.in/international-relations.html", "https://tulikabooks.in/labour-studies.html", "https://tulikabooks.in/law-legal-studies.html", "https://tulikabooks.in/linguistics-language.html", "https://tulikabooks.in/literary-studies.html", "https://tulikabooks.in/media-studies.html", "https://tulikabooks.in/memoir-biography.html", "https://tulikabooks.in/music.html", "https://tulikabooks.in/philosophy.html", "https://tulikabooks.in/photography.html", "https://tulikabooks.in/politics-political-theory.html", "https://tulikabooks.in/science.html", "https://tulikabooks.in/sociology.html", "https://tulikabooks.in/theatre.html", "https://tulikabooks.in/women-studies.html"]
 map = {}
 
+# for base_url in base_urls:
 soup = get_soup(base_url)
 if soup:
     scrape_data(base_url)
@@ -68,5 +69,5 @@ if soup:
     for key, values in map.items():
         insert_data(key, values[0], values[1])
 
-    # Close the connection
-    connection.close()
+# Close the connection
+connection.close()

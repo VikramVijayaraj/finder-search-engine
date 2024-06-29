@@ -3,18 +3,18 @@ import requests
 
 
 # url = "https://www.bookswagon.com/book/doglapan-ashneer-grover/9780670097111"
-url = "https://www.bookswagon.com/"
+url = "https://tulikabooks.in/all-categories"
 
 response = requests.get(url)
 soup = BeautifulSoup(response.text, "html.parser")
-# categories = soup.find(class_="allCategoriesPage")
-# categories_links = categories.find_all("a")
-# for link in categories_links:
-#     href = link.get("href")
-#     print(href)
+categories = soup.find(class_="allCategoriesPage")
+categories_links = categories.find_all("a")
+for link in categories_links:
+    href = link.get("href")
+    print(href)
 # res = requests.get(href)
 # soup = BeautifulSoup(res.text, "html.parser")
-print(soup.title.text)
+# print(soup.title.text)
 # meta_tags = soup.find_all('meta')
 # for meta in meta_tags:
 #     data = meta.get("name")
