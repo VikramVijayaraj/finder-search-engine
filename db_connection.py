@@ -4,7 +4,7 @@ from mysql.connector import Error
 
 
 def create_connection():
-    connection = None
+    # connection = None
     try:
         print("DB_HOST:", os.environ.get("DB_HOST"))
         print("DB_USER:", os.environ.get("DB_USER"))
@@ -19,9 +19,10 @@ def create_connection():
         )
         if connection.is_connected():
             print("Connection to MySQL DB is successful")
+            return connection
     except Error as e:
         print(f"The error '{e}' occurred")
-    return connection
+        return
 
 
 # Create a connection
