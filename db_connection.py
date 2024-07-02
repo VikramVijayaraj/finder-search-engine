@@ -4,7 +4,6 @@ from mysql.connector import Error
 
 
 def create_connection():
-    # connection = None
     try:
         print("DB_HOST:", os.environ.get("DB_HOST"))
         print("DB_USER:", os.environ.get("DB_USER"))
