@@ -1,17 +1,21 @@
-# db_connection.py
 import mysql.connector
+import os
 from mysql.connector import Error
-from config import DATABASE_CONFIG
 
 
 def create_connection():
     connection = None
     try:
+        print("DB_HOST:", os.environ.get("DB_HOST"))
+        print("DB_USER:", os.environ.get("DB_USER"))
+        print("DB_PASSWORD:", os.environ.get("DB_PASSWORD"))
+        print("DB_DATABASE:", os.environ.get("DB_DATABASE"))
+
         connection = mysql.connector.connect(
-            host=DATABASE_CONFIG['host'],
-            user=DATABASE_CONFIG['user'],
-            password=DATABASE_CONFIG['password'],
-            database=DATABASE_CONFIG['database']
+            host=os.environ.get("DB_HOST"),
+            user=os.environ.get("DB_USER"),
+            password=os.environ.get("DB_PASSWORD"),
+            database=os.environ.get("DB_DATABASE"),
         )
         if connection.is_connected():
             print("Connection to MySQL DB is successful")
@@ -20,5 +24,5 @@ def create_connection():
     return connection
 
 
-# Create a single connection instance
+# Create a connection
 connection = create_connection()
