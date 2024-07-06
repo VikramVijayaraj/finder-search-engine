@@ -55,7 +55,7 @@ Finder is a search engine specifically focused on books. Users can search for bo
 
 ## Deployment
 
-This application is hosted live on [Render](https://render.com/) and can access this application on [Finder](https://finder-search-engine.onrender.com/).
+This application is hosted live on [Render](https://render.com/) and can access this application on [Finder](https://finder-search-engine.onrender.com/). The MySQL database is hosted on [Clever Cloud](https://console.clever-cloud.com/users/me/addons/addon_9abbc9e6-88c3-42f2-9c78-1224a71c6bfe).
 
 ## Contributing
 
